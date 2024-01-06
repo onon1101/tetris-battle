@@ -23,21 +23,32 @@ app.get('/', (req, res) => {
         res.sendFile(join(__dirname, 'index.html'));
 });
 
+app.get('/waiting', (req, res) => {
+    res.sendFile(join(__dirname, 'waiting.html'));
+})
+
 io.on('connection', (socket) => {
 
-    players.push(socket);
-    if (players.length >= 2) {
+    if (players.length === 2) {
+        socket.emit('redirect', { msg: 'redirect' });
+        return;
+    }
+    else
+        players.push(socket);
+    if (players.length === 2) {
         players.forEach((player) => {
-            player.emit('reset', { msg: 'reset' });
             player.emit('start', { msg: 'start' });
         })
     }
 
     socket.on('disconnect', () => {
         players = players.filter((player) => player.id !== socket.id);
-        if (players.length < 2) {
-            io.emit('reset', { msg: 'reset' });
-            io.emit('pause', { msg: 'pause' });
+        // console.log(players.length);
+        if(players.length < 2) {
+            players.forEach((player) => {
+                player.emit('win', 'Opponent disconnected OAO!!!\nYou win' );
+                player.emit('reset', { msg: 'reset' });
+            })
         }
     })
 
@@ -51,9 +62,9 @@ io.on('connection', (socket) => {
     socket.on('end', (msg) => {
         players.forEach((player) => {
             if (player.id !== socket.id)
-                player.emit('win', { msg: 'win' });
+                player.emit('win', 'You win' );
             else
-                player.emit('lose', { msg: 'lose' });
+                player.emit('lose', 'You lose' );
         })
     })
 

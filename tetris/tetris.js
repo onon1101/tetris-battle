@@ -155,14 +155,15 @@ function clear_board() {
     }
     score += add_score[cnt];
     if (cnt > 0) {
-        socket.emit('send_garbage', {count: cnt});
+        socket.emit('send_garbage', {count: add_score[cnt]/100});
         garbage_count = Math.max(garbage_count - Math.max(0, Math.floor(cnt / 2)), 0);
     }
 
 }
 
 function add_garbage() {
-    for (let i = 0; i < garbage_count; i++) {
+    console.log(garbage_count);
+    for (let i = 0; i < Math.floor(garbage_count/4); i++) {
         let space = getRandomInt(0, 10);
         for (let j = 0; j < 10; j++) {
             for (let k = 1; k < 20; k++) {
@@ -175,7 +176,7 @@ function add_garbage() {
             board[19][j] = 8;
         }
     }
-    garbage_count = 0;
+    garbage_count %= 4;
 }
 
 function move_down_active_block() {
@@ -346,7 +347,8 @@ function draw_garbage_pile(garbage_count, delta) {
     context.fillStyle = "rgba(0, 0, 0, 0.3)";
     context.fillRect(310-delta, 50, 25, 600);
     context.fillStyle = "rgb(211,145,145)";
-    context.fillRect(310-delta, 650 - garbage_count * 30, 25, garbage_count * 30);
+    let gcnt = Math.floor(garbage_count/4);
+    context.fillRect(310-delta, 650 - gcnt * 30, 25, gcnt * 30);
     context.strokeStyle = "rgb(0,0,0)";
     context.strokeWidth = 1.5;
     context.beginPath();
@@ -405,7 +407,7 @@ function init_variables() {
 }
 
 function set_intervals() {
-    let level = Math.floor(get_time() / Math.floor(10 + get_time() / 25));
+    let level = Math.floor(get_time() / Math.floor(10 + get_time() / 15));
     let speed = Math.max(Math.floor(Math.pow(0.8 - level * 0.007, level) * 1000), 30);
     Intervals.push(setInterval(move_down_active_block, speed));
 }
@@ -470,11 +472,13 @@ document.addEventListener("keydown", (event) => {
 //reset_game();
 pause_game();
 
+socket.on('reset', (msg) => {
+    reset_game();
+});
 
 socket.on('start', (msg) => {
     reset_game();
     state = "start";
-    time = new Date();
 });
 
 socket.on('pause', (msg) => {
@@ -487,12 +491,12 @@ socket.on('send_garbage', (msg) => {
 
 socket.on('win', (msg) => {
     pause_game();
-    alert('You win!');
+    alert(msg);
 })
 
 socket.on('lose', (msg) => {
     pause_game();
-    alert('You lose!');
+    alert(msg);
 })
 
 socket.on('draw', (msg) => {
@@ -502,4 +506,6 @@ socket.on('draw', (msg) => {
     opponent_active_block = msg.active_block;
 })
 
-
+socket.on('redirect', (msg) => {
+    location.href = '/waiting';
+})
