@@ -155,7 +155,7 @@ function clear_board() {
     }
     score += add_score[cnt];
     if (cnt > 0) {
-        socket.emit('send_garbage', {count: add_score[cnt]/100});
+        socket.emit('send_garbage', {count: add_score[cnt] / 100});
         garbage_count = Math.max(garbage_count - Math.max(0, Math.floor(cnt / 2)), 0);
     }
 
@@ -163,7 +163,7 @@ function clear_board() {
 
 function add_garbage() {
     console.log(garbage_count);
-    for (let i = 0; i < Math.floor(garbage_count/4); i++) {
+    for (let i = 0; i < Math.floor(garbage_count / 4); i++) {
         let space = getRandomInt(0, 10);
         for (let j = 0; j < 10; j++) {
             for (let k = 1; k < 20; k++) {
@@ -215,18 +215,14 @@ function clear_canvas() {
 }
 
 function draw_background() {
-    context.fillStyle = 'rgba(205, 245, 253, 1)';
-    context.fillRect(0, 0, canvas.width/2, canvas.height);
-    context.fillStyle = 'rgb(92,223,255, 0.3)';
-    context.fillRect(canvas.width/2, 0, canvas.width/2, canvas.height);
     context.fillStyle = 'rgba(0, 0, 0, 0.3)';
-    context.fillRect(350-delta, 50, 300, 600);
-    context.fillRect(350+delta, 50, 300, 600);
+    context.fillRect(350 - delta, 50, 300, 600);
+    context.fillRect(350 + delta, 50, 300, 600);
 }
 
-function draw_score(score,delta) {
+function draw_score(score, delta) {
     context.fillStyle = "rgb(0,0,0,0.25)";
-    context.font = "bold 40px 'Noto Serif'";
+    context.font = "45px 'Outfit', sans-serif";
     let digit = score.toString().length + 8;
     context.fillText("Score : " + score, 500 - digit * 10 - delta, 350);
 }
@@ -238,45 +234,45 @@ function draw_grid() {
     context.lineWidth = 1.5;
     for (let i = 1; i < 20; i++) {
         context.beginPath();
-        context.moveTo(350 -delta, 50 + i * grid_size);
+        context.moveTo(350 - delta, 50 + i * grid_size);
         context.lineTo(650 - delta, 50 + i * grid_size);
         context.closePath();
         context.stroke();
         context.beginPath();
         context.moveTo(350 + delta, 50 + i * grid_size);
-        context.lineTo(650+ delta, 50 + i * grid_size);
+        context.lineTo(650 + delta, 50 + i * grid_size);
         context.closePath();
         context.stroke();
     }
     for (let i = 1; i < 10; i++) {
         context.beginPath();
-        context.moveTo(350 + i * grid_size-delta, 50);
-        context.lineTo(350 + i * grid_size-delta, 650);
+        context.moveTo(350 + i * grid_size - delta, 50);
+        context.lineTo(350 + i * grid_size - delta, 650);
         context.closePath();
         context.stroke();
         context.beginPath();
-        context.moveTo(350 + i * grid_size+delta, 50);
-        context.lineTo(350 + i * grid_size+delta, 650);
+        context.moveTo(350 + i * grid_size + delta, 50);
+        context.lineTo(350 + i * grid_size + delta, 650);
         context.closePath();
         context.stroke();
     }
 
     context.strokeStyle = "rgb(0,0,0)";
     context.beginPath();
-    context.moveTo(350-delta, 50);
-    context.lineTo(350-delta, 650);
-    context.lineTo(650-delta, 650);
-    context.lineTo(650-delta, 50);
+    context.moveTo(350 - delta, 50);
+    context.lineTo(350 - delta, 650);
+    context.lineTo(650 - delta, 650);
+    context.lineTo(650 - delta, 50);
     context.stroke();
     context.beginPath();
-    context.moveTo(350+delta, 50);
-    context.lineTo(350+delta, 650);
-    context.lineTo(650+delta, 650);
-    context.lineTo(650+delta, 50);
+    context.moveTo(350 + delta, 50);
+    context.lineTo(350 + delta, 650);
+    context.lineTo(650 + delta, 650);
+    context.lineTo(650 + delta, 50);
     context.stroke();
 }
 
-function draw_game_board(game_board,delta) {
+function draw_game_board(game_board, delta) {
     const color = {
         1: "rgb(62, 219, 161)",
         2: "rgb(219, 121, 61)",
@@ -291,18 +287,18 @@ function draw_game_board(game_board,delta) {
         for (let j = 0; j < 10; j++) {
             if (game_board[i][j] !== 0) {
                 context.fillStyle = color[game_board[i][j]];
-                context.fillRect(350 + j * 30+delta, 50 + i * 30, 30, 30);
+                context.fillRect(350 + j * 30 + delta, 50 + i * 30, 30, 30);
                 context.strokeStyle = "rgb(0,0,0)";
                 context.strokeWidth = 1.5;
-                context.strokeRect(350 + j * 30+delta, 50 + i * 30, 30, 30);
+                context.strokeRect(350 + j * 30 + delta, 50 + i * 30, 30, 30);
                 context.strokeStyle = "rgba(0,0,0,0.15)";
-                context.strokeRect(357.5 + j * 30+delta, 57.5 + i * 30, 15, 15);
+                context.strokeRect(357.5 + j * 30 + delta, 57.5 + i * 30, 15, 15);
             }
         }
     }
 }
 
-function draw_active_block(active_block,delta) {
+function draw_active_block(active_block, delta) {
     const color = {
         1: "rgb(62, 219, 161)",
         2: "rgb(219, 121, 61)",
@@ -322,7 +318,7 @@ function draw_active_block(active_block,delta) {
             context.fillRect(350 + (k + active_block.offset_j) * 30 - delta, 50 + (j + active_block.offset_i) * 30, 30, 30);
             context.strokeStyle = "rgb(0,0,0)";
             context.lineWidth = 1.5;
-            context.strokeRect(350 + (k + active_block.offset_j) * 30- delta, 50 + (j + active_block.offset_i) * 30, 30, 30);
+            context.strokeRect(350 + (k + active_block.offset_j) * 30 - delta, 50 + (j + active_block.offset_i) * 30, 30, 30);
             context.strokeStyle = "rgba(0,0,0,0.15)";
             context.lineWidth = 1.5;
             context.strokeRect(357.5 + (k + active_block.offset_j) * 30 - delta, 57.5 + (j + active_block.offset_i) * 30, 15, 15);
@@ -334,36 +330,36 @@ function draw_death_line() {
     context.strokeStyle = "rgb(255,0,0)";
     context.strokeWidth = 1.5;
     context.beginPath();
-    context.moveTo(350-delta, 170);
-    context.lineTo(650-delta, 170);
+    context.moveTo(350 - delta, 170);
+    context.lineTo(650 - delta, 170);
     context.stroke();
     context.beginPath();
-    context.moveTo(350+delta, 170);
-    context.lineTo(650+delta, 170);
+    context.moveTo(350 + delta, 170);
+    context.lineTo(650 + delta, 170);
     context.stroke();
 }
 
 function draw_garbage_pile(garbage_count, delta) {
     context.fillStyle = "rgba(0, 0, 0, 0.3)";
-    context.fillRect(310-delta, 50, 25, 600);
+    context.fillRect(310 - delta, 50, 25, 600);
     context.fillStyle = "rgb(211,145,145)";
-    let gcnt = Math.floor(garbage_count/4);
-    context.fillRect(310-delta, 650 - gcnt * 30, 25, gcnt * 30);
+    let gcnt = Math.floor(garbage_count / 4);
+    context.fillRect(310 - delta, 650 - gcnt * 30, 25, gcnt * 30);
     context.strokeStyle = "rgb(0,0,0)";
     context.strokeWidth = 1.5;
     context.beginPath();
-    context.moveTo(310-delta, 50);
-    context.lineTo(310-delta, 650);
-    context.lineTo(335-delta, 650);
-    context.lineTo(335-delta, 50);
+    context.moveTo(310 - delta, 50);
+    context.lineTo(310 - delta, 650);
+    context.lineTo(335 - delta, 650);
+    context.lineTo(335 - delta, 50);
     context.stroke();
 }
 
 function draw_waiting() {
-    context.fillStyle = "rgb(0,0,0)";
-    context.font = "bold 40px 'Noto Serif'";
-    let t = Math.floor(get_time()+1) % 3;
-    context.fillText("Waiting for other players" + (t === 0 ? "." : (t === 1 ? ".." : "...")) , 200, 350);
+    context.fillStyle = "rgb(101,101,101)";
+    context.font = "50px 'Outfit', sans-serif";
+    let t = Math.floor(get_time() + 1) % 3;
+    context.fillText("Waiting for other players" + (t === 0 ? "." : (t === 1 ? ".." : "...")), 200, 350);
 }
 
 function update_canvas() {
@@ -377,15 +373,15 @@ function update_canvas() {
         draw_score(score, delta);
         draw_score(opponent_score, -delta);
         draw_grid();
-        draw_game_board(opponent_board,delta);
-        draw_game_board(board,-delta);
-        draw_active_block(active_block,delta);
-        draw_active_block(opponent_active_block,-delta);
+        draw_game_board(opponent_board, delta);
+        draw_game_board(board, -delta);
+        draw_active_block(active_block, delta);
+        draw_active_block(opponent_active_block, -delta);
         draw_death_line();
         draw_garbage_pile(opponent_garbage_count, -delta);
         draw_garbage_pile(garbage_count, delta);
     }
-    socket.emit('draw', { board: board, score: score, garbage_count: garbage_count, active_block: active_block });
+    socket.emit('draw', {board: board, score: score, garbage_count: garbage_count, active_block: active_block});
     requestAnimationFrame(update_canvas);
 }
 
@@ -399,7 +395,7 @@ function init_variables() {
     score = 0;
     garbage_count = 0;
     state = "waiting";
-    opponent_board= Array.from(Array(20), () => new Array(10).fill(0));
+    opponent_board = Array.from(Array(20), () => new Array(10).fill(0));
     opponent_garbage_count = 0;
     opponent_score = 0;
     opponent_active_block = null;
