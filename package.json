@@ -1,23 +1,27 @@
 {
-  "name": "tetris",
-  "version": "1.0.0",
-  "description": "multiplayer tetris app",
-  "main": "app.js",
-  "type": "module",
+  "name": "tetris-battle-clone",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@socket.io/cluster-adapter": "^0.2.2",
-    "express": "^4.18.2",
-    "socket.io": "^4.7.2",
-    "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.7-rc.0"
+    "react": "^18",
+    "react-dom": "^18",
+    "next": "14.1.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.0"
   }
 }
